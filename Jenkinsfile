@@ -11,6 +11,7 @@ pipeline {
     tools {
         maven 'Maven3' // name configured in Manage Jenkins > Tools
         jdk 'JDK17'
+        dockerTool 'docker'
     }
 
     stages {
@@ -34,14 +35,14 @@ pipeline {
         }
 
         stage('SonarQube Scan') {
-            steps {
-                // 'SonarQube' must match the server name set in
-                // Manage Jenkins > System > SonarQube servers
-                withSonarQubeEnv('SonarQube') {
-                    sh 'mvn sonar:sonar'
-                }
+    steps {
+        timeout(time: 5, unit: 'MINUTES') {
+            withSonarQubeEnv('SonarQube') {
+                sh 'mvn sonar:sonar'
             }
         }
+    }
+}
 
         stage('Quality Gate') {
             steps {
