@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: nalshareef0/devops-pipeline-demo
-  tag: "16"
+  tag: "17"
   pullPolicy: IfNotPresent
 
 service:
