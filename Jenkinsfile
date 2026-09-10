@@ -4,14 +4,14 @@ pipeline {
     environment {
         // Configure this credential in Jenkins: Manage Jenkins > Credentials
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
-        IMAGE_NAME            = "yourdockerhubuser/devops-pipeline-demo"
+        IMAGE_NAME            = 'nalshareef0/devops-pipeline-demo'
         IMAGE_TAG             = "${env.BUILD_NUMBER}"
     }
 
     tools {
         maven 'Maven3' // name configured in Manage Jenkins > Tools
         jdk 'JDK17'
-        dockerTool 'docker'
+        
     }
 
     stages {
