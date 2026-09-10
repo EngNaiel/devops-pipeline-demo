@@ -68,10 +68,23 @@ pipeline {
         }
 
         stage('Update Helm values (GitOps)') {
-            steps {
-                echo "TODO (Phase 4): bump image.tag to ${IMAGE_TAG} in helm/values.yaml, commit and push so ArgoCD picks it up."
-            }
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'github-creds',
+            usernameVariable: 'GIT_USER',
+            passwordVariable: 'GIT_TOKEN'
+        )]) {
+            sh '''
+                git config user.email "jenkins@local"
+                git config user.name "Jenkins"
+                sed -i "s|tag: .*|tag: \\"${IMAGE_TAG}\\"|" helm/values.yaml
+                git add helm/values.yaml
+                git commit -m "Update image tag to ${IMAGE_TAG}"
+                git push https://${GIT_USER}:${GIT_TOKEN}@github.com/EngNaiel/devops-pipeline-demo.git HEAD:main
+            '''
         }
+    }
+}
     }
 
     post {
